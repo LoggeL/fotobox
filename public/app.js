@@ -30,11 +30,13 @@ function showError(msg) {
 
 async function startCamera() {
   try {
+    // moderate Aufloesung + 30 fps: bei max. Aufloesung drosseln viele Webcams
+    // die Framerate massiv, der 4:3-Zuschnitt passiert ohnehin im Canvas
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1440 },
-        aspectRatio: { ideal: 4 / 3 },
+        width: { ideal: 1280 },
+        height: { ideal: 960 },
+        frameRate: { ideal: 30 },
         facingMode: "user",
       },
       audio: false,
