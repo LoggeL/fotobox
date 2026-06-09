@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Fotobox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="stage">
+    <!-- Sucher -->
+    <video id="finder" autoplay playsinline muted></video>
+    <canvas id="capture-canvas" hidden></canvas>
+
+    <!-- eingefrorenes Foto nach Aufnahme -->
+    <img id="preview" alt="" hidden>
+
+    <!-- Countdown -->
+    <div id="countdown" hidden><span id="countdown-number">3</span></div>
+
+    <!-- Blitz -->
+    <div id="flash"></div>
+
+    <!-- Steuerung im Sucher-Modus -->
+    <div id="controls-live" class="controls">
+      <button id="btn-capture" aria-label="Foto aufnehmen">
+        <span class="ring"></span>
+      </button>
+    </div>
+
+    <!-- Steuerung im Vorschau-Modus -->
+    <div id="controls-review" class="controls" hidden>
+      <button id="btn-retake" class="btn-paper">Neues Foto</button>
+      <button id="btn-qr" class="btn-paper btn-accent">QR-Code</button>
+    </div>
+
+    <!-- QR-Overlay -->
+    <div id="qr-overlay" hidden>
+      <div id="qr-card">
+        <h1>Scannen &amp; mitnehmen!</h1>
+        <div id="qr-holder"></div>
+        <p>Handy-Kamera draufhalten, Foto herunterladen.</p>
+        <button id="btn-qr-close" class="btn-paper">Fertig</button>
+      </div>
+    </div>
+
+    <!-- Fehlermeldung -->
+    <div id="error-box" hidden></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

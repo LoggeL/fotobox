@@ -1,0 +1,196 @@
+/* Fotobox — hand-drawn Look, ausgelegt auf 4:3-Touchscreen im Vollbild */
+
+:root {
+  --paper: #fffef8;
+  --ink: #2b2b2b;
+  --accent: #e8453c;
+  --wobble: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  font-family: "Patrick Hand", "Segoe Print", "Comic Sans MS", cursive;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--ink);
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  /* auf einem 4:3-Monitor fuellt das exakt den Schirm */
+  aspect-ratio: 4 / 3;
+  margin: auto;
+}
+
+#finder, #preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#finder {
+  transform: scaleX(-1); /* Spiegel-Sucher, das Foto selbst bleibt ungespiegelt */
+}
+
+/* ---------- Steuerung ---------- */
+
+.controls {
+  position: absolute;
+  bottom: 4vh;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6vw;
+  z-index: 10;
+}
+
+#btn-capture {
+  width: 16vh;
+  height: 16vh;
+  border-radius: 50%;
+  border: 0.8vh solid var(--paper);
+  background: rgba(255, 254, 248, 0.25);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.1s;
+}
+
+#btn-capture:active { transform: scale(0.9); }
+
+#btn-capture .ring {
+  width: 11vh;
+  height: 11vh;
+  border-radius: 48% 52% 50% 50% / 51% 49% 52% 48%; /* leicht schiefer Kreis */
+  background: var(--accent);
+  border: 0.5vh solid var(--paper);
+}
+
+.btn-paper {
+  font-family: inherit;
+  font-size: 4.5vh;
+  padding: 2vh 5vw;
+  color: var(--ink);
+  background: var(--paper);
+  border: 0.45vh solid var(--ink);
+  border-radius: var(--wobble);
+  box-shadow: 0.6vh 0.6vh 0 rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transform: rotate(-0.6deg);
+}
+
+.btn-paper:nth-child(2) { transform: rotate(0.8deg); }
+
+.btn-paper:active {
+  box-shadow: 0.2vh 0.2vh 0 rgba(0, 0, 0, 0.55);
+  translate: 0.3vh 0.3vh;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ---------- Countdown ---------- */
+
+#countdown {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 20;
+}
+
+#countdown-number {
+  font-size: 42vh;
+  color: var(--paper);
+  text-shadow: 1.2vh 1.2vh 0 rgba(0, 0, 0, 0.6);
+  animation: pop 1s ease-out infinite;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.4) rotate(-6deg); opacity: 0; }
+  25%  { transform: scale(1.1) rotate(2deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+}
+
+/* ---------- Blitz ---------- */
+
+#flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+#flash.zap { animation: zap 0.45s ease-out; }
+
+@keyframes zap {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---------- QR-Overlay ---------- */
+
+#qr-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 40;
+}
+
+#qr-card {
+  background: var(--paper);
+  border: 0.5vh solid var(--ink);
+  border-radius: var(--wobble);
+  box-shadow: 1vh 1vh 0 rgba(0, 0, 0, 0.5);
+  padding: 4vh 5vw;
+  text-align: center;
+  transform: rotate(-0.5deg);
+}
+
+#qr-card h1 { font-size: 6vh; color: var(--ink); margin-bottom: 2vh; }
+#qr-card p  { font-size: 3.5vh; color: var(--ink); margin: 2vh 0 3vh; }
+
+#qr-holder svg {
+  width: 42vh;
+  height: 42vh;
+  border: 0.4vh solid var(--ink);
+  border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
+  padding: 1vh;
+  background: #fff;
+}
+
+/* ---------- Fehler ---------- */
+
+#error-box {
+  position: absolute;
+  top: 4vh;
+  left: 50%;
+  transform: translateX(-50%) rotate(-0.5deg);
+  background: var(--paper);
+  color: var(--accent);
+  font-size: 3.5vh;
+  padding: 1.5vh 3vw;
+  border: 0.4vh solid var(--accent);
+  border-radius: var(--wobble);
+  z-index: 50;
+}
+
+[hidden] { display: none !important; }
