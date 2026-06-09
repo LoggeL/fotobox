@@ -3,43 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dein Foto</title>
+  <title>Dein Foto — Kolpingtheater Ramsen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root { font-family: "Patrick Hand", "Segoe Print", "Comic Sans MS", cursive; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: #2b2b2b;
+      background: #0a0a0a;
+      color: #f7f7f8;
+      font-family: "Segoe UI", system-ui, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1.3rem;
       padding: 1rem;
       box-sizing: border-box;
     }
-    img {
-      max-width: 100%;
-      max-height: 70vh;
-      border: 4px solid #fffef8;
-      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-      background: #fffef8;
-      padding: 4px;
+    header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: "Cinzel", Georgia, serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
     }
-    a {
-      font-size: 1.5rem;
-      color: #2b2b2b;
-      background: #fffef8;
+    header img { height: 2.2rem; }
+    header em { font-style: normal; color: #ff6a00; }
+    img.photo {
+      max-width: 100%;
+      max-height: 65vh;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0.6rem;
+    }
+    a.download {
+      font-family: "Cinzel", Georgia, serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.06em;
+      color: #fff;
+      background: linear-gradient(160deg, #ff7a00, #e65e00);
       text-decoration: none;
-      padding: 0.7rem 2.5rem;
-      border: 3px solid #2b2b2b;
-      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
+      padding: 0.8rem 2.8rem;
+      border: 1px solid rgba(255, 180, 100, 0.45);
+      border-radius: 0.6rem;
+      box-shadow: 0 0 2.5rem rgba(255, 106, 0, 0.35);
     }
   </style>
 </head>
 <body>
-  <img src="/photos/{{ID}}.jpg" alt="Dein Foto">
-  <a href="/photos/{{ID}}.jpg" download="fotobox-{{ID}}.jpg">Herunterladen</a>
+  <header>
+    <img src="/img/logo.png" alt="">
+    <span>Kolpingtheater <em>Ramsen</em></span>
+  </header>
+  <img class="photo" src="/photos/{{ID}}.jpg" alt="Dein Foto">
+  <a class="download" href="/photos/{{ID}}.jpg" download="fotobox-{{ID}}.jpg">Herunterladen</a>
 </body>
 </html>

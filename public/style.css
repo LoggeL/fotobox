@@ -1,11 +1,17 @@
-/* Fotobox — hand-drawn Look, ausgelegt auf 4:3-Touchscreen im Vollbild */
+/* Fotobox — Kolpingtheater-Ramsen-Look: dunkle Buehne, Kolping-Orange, Cinzel.
+   Ausgelegt auf 4:3-Touchscreen im Vollbild. */
 
 :root {
-  --paper: #fffef8;
-  --ink: #2b2b2b;
-  --accent: #e8453c;
-  --wobble: 255px 15px 225px 15px / 15px 225px 15px 255px;
-  font-family: "Patrick Hand", "Segoe Print", "Comic Sans MS", cursive;
+  --bg: #0a0a0a;
+  --surface: #18181a;
+  --surface-2: #232326;
+  --ink: #f7f7f8;
+  --muted: #8a8a8e;
+  --accent: #ff6a00;
+  --accent-soft: #ff7a00;
+  --accent-deep: #e65e00;
+  --line: rgba(255, 255, 255, 0.15);
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,7 +19,8 @@
 html, body {
   width: 100%;
   height: 100%;
-  background: var(--ink);
+  background: var(--bg);
+  color: var(--ink);
   overflow: hidden;
   touch-action: manipulation;
   user-select: none;
@@ -41,6 +48,38 @@ html, body {
   transform: scaleX(-1); /* Spiegel-Sucher, das Foto selbst bleibt ungespiegelt */
 }
 
+/* ---------- Branding ---------- */
+
+#brand {
+  position: absolute;
+  top: 3vh;
+  left: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 1.8vh;
+  z-index: 10;
+  padding: 1.2vh 2.2vh;
+  background: rgba(10, 10, 10, 0.55);
+  border: 1px solid var(--line);
+  border-radius: 0.8vh;
+  backdrop-filter: blur(6px);
+}
+
+#brand img { height: 6vh; width: auto; }
+
+#brand span {
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 3.2vh;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+#brand span em {
+  font-style: normal;
+  color: var(--accent);
+}
+
 /* ---------- Steuerung ---------- */
 
 .controls {
@@ -50,7 +89,7 @@ html, body {
   right: 0;
   display: flex;
   justify-content: center;
-  gap: 6vw;
+  gap: 5vw;
   z-index: 10;
 }
 
@@ -58,8 +97,9 @@ html, body {
   width: 16vh;
   height: 16vh;
   border-radius: 50%;
-  border: 0.8vh solid var(--paper);
-  background: rgba(255, 254, 248, 0.25);
+  border: 0.6vh solid var(--line);
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(6px);
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -71,35 +111,33 @@ html, body {
 #btn-capture .ring {
   width: 11vh;
   height: 11vh;
-  border-radius: 48% 52% 50% 50% / 51% 49% 52% 48%; /* leicht schiefer Kreis */
-  background: var(--accent);
-  border: 0.5vh solid var(--paper);
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--accent-soft), var(--accent-deep));
+  box-shadow: 0 0 4vh rgba(255, 106, 0, 0.55);
 }
 
 .btn-paper {
-  font-family: inherit;
-  font-size: 4.5vh;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 4vh;
+  letter-spacing: 0.06em;
   padding: 2vh 5vw;
   color: var(--ink);
-  background: var(--paper);
-  border: 0.45vh solid var(--ink);
-  border-radius: var(--wobble);
-  box-shadow: 0.6vh 0.6vh 0 rgba(0, 0, 0, 0.55);
+  background: rgba(24, 24, 26, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 1vh;
+  backdrop-filter: blur(6px);
   cursor: pointer;
-  transform: rotate(-0.6deg);
+  transition: transform 0.1s;
 }
 
-.btn-paper:nth-child(2) { transform: rotate(0.8deg); }
-
-.btn-paper:active {
-  box-shadow: 0.2vh 0.2vh 0 rgba(0, 0, 0, 0.55);
-  translate: 0.3vh 0.3vh;
-}
+.btn-paper:active { transform: scale(0.95); }
 
 .btn-accent {
-  background: var(--accent);
-  color: var(--paper);
-  border-color: var(--ink);
+  background: linear-gradient(160deg, var(--accent-soft), var(--accent-deep));
+  border-color: rgba(255, 180, 100, 0.45);
+  box-shadow: 0 0 4vh rgba(255, 106, 0, 0.4);
+  color: #fff;
 }
 
 /* ---------- Countdown ---------- */
@@ -109,21 +147,23 @@ html, body {
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.35);
   z-index: 20;
 }
 
 #countdown-number {
-  font-size: 42vh;
-  color: var(--paper);
-  text-shadow: 1.2vh 1.2vh 0 rgba(0, 0, 0, 0.6);
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 40vh;
+  color: var(--accent);
+  text-shadow: 0 0 8vh rgba(255, 106, 0, 0.8), 0 0 2vh rgba(0, 0, 0, 0.9);
   animation: pop 1s ease-out infinite;
 }
 
 @keyframes pop {
-  0%   { transform: scale(0.4) rotate(-6deg); opacity: 0; }
-  25%  { transform: scale(1.1) rotate(2deg);  opacity: 1; }
-  100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+  0%   { transform: scale(0.4); opacity: 0; }
+  25%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ---------- Blitz ---------- */
@@ -151,29 +191,35 @@ html, body {
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.75);
   z-index: 40;
 }
 
 #qr-card {
-  background: var(--paper);
-  border: 0.5vh solid var(--ink);
-  border-radius: var(--wobble);
-  box-shadow: 1vh 1vh 0 rgba(0, 0, 0, 0.5);
+  background: var(--surface);
+  border: 1px solid rgba(255, 106, 0, 0.45);
+  border-radius: 1.2vh;
+  box-shadow: 0 0 10vh rgba(255, 106, 0, 0.25), 0 2vh 6vh rgba(0, 0, 0, 0.6);
   padding: 4vh 5vw;
   text-align: center;
-  transform: rotate(-0.5deg);
 }
 
-#qr-card h1 { font-size: 6vh; color: var(--ink); margin-bottom: 2vh; }
-#qr-card p  { font-size: 3.5vh; color: var(--ink); margin: 2vh 0 3vh; }
+#qr-card h1 {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 5.5vh;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  margin-bottom: 2.5vh;
+}
+
+#qr-card p { font-size: 3.2vh; color: var(--muted); margin: 2.5vh 0 3vh; }
 
 #qr-holder svg {
   width: 42vh;
   height: 42vh;
-  border: 0.4vh solid var(--ink);
-  border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
-  padding: 1vh;
+  border: 1px solid var(--line);
+  border-radius: 1vh;
+  padding: 1.5vh;
   background: #fff;
 }
 
@@ -183,13 +229,13 @@ html, body {
   position: absolute;
   top: 4vh;
   left: 50%;
-  transform: translateX(-50%) rotate(-0.5deg);
-  background: var(--paper);
-  color: var(--accent);
-  font-size: 3.5vh;
+  transform: translateX(-50%);
+  background: var(--surface);
+  color: var(--accent-soft);
+  font-size: 3.2vh;
   padding: 1.5vh 3vw;
-  border: 0.4vh solid var(--accent);
-  border-radius: var(--wobble);
+  border: 1px solid rgba(255, 106, 0, 0.5);
+  border-radius: 1vh;
   z-index: 50;
 }
 
