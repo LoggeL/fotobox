@@ -24,8 +24,19 @@ function lanIp(): string {
   return candidates.find((ip) => !ip.startsWith("100.")) ?? candidates[0] ?? "localhost";
 }
 
-function baseUrl(): string {
-  return process.env.BASE_URL?.replace(/\/$/, "") ?? `http://${lanIp()}:${PORT}`;
+// Basis-URL fuer QR-Links: BASE_URL-Env > Request-Host (hinter Traefik/Proxy) > LAN-IP.
+// Bei localhost-Host (Kiosk-Browser am Geraet) hilft der Host-Header nicht, da
+// Gaeste-Handys ihn nicht erreichen — dann LAN-IP.
+function baseUrl(headers?: Record<string, string | string[] | undefined>): string {
+  if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, "");
+  const fwdHost = headers?.["x-forwarded-host"] ?? headers?.host;
+  const host = Array.isArray(fwdHost) ? fwdHost[0] : fwdHost;
+  if (host && !/^(localhost|127\.)/.test(host)) {
+    const fwdProto = headers?.["x-forwarded-proto"];
+    const proto = (Array.isArray(fwdProto) ? fwdProto[0] : fwdProto) ?? "http";
+    return `${proto}://${host}`;
+  }
+  return `http://${lanIp()}:${PORT}`;
 }
 
 const ID_RE = /^[a-z0-9-]+$/;
@@ -60,7 +71,7 @@ app.get<{ Params: { id: string } }>("/api/photos/:id/qr", async (req, reply) => 
   } catch {
     return reply.code(404).send({ error: "Foto nicht gefunden" });
   }
-  const url = `${baseUrl()}/p/${id}`;
+  const url = `${baseUrl(req.headers)}/p/${id}`;
   const svg = await QRCode.toString(url, {
     type: "svg",
     margin: 1,
